@@ -1,0 +1,5 @@
+{
+  "ambientDependencies": {
+    "chrome": "github:DefinitelyTyped/DefinitelyTyped/chrome/chrome.d.ts#39ced332d31a4c9cdfb4d568e8ef69b18932b6eb"
+  }
+}
