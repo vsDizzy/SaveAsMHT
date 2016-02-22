@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
-  "name": "SaveAsMHT",
+  "name": "Save As MHT",
+  "short_name": "SaveAsMHT",
   "version": "0.0.1",
   "description": "Chrome extension saving page as .MHT",
-  "default_locale": "en",
   "homepage_url": "https://github.com/vsDizzy/SaveAsMHT",
   "background": {
     "persistent": false,
