@@ -1,11 +1,11 @@
-chrome.runtime.onStartup.addListener(install);
-chrome.runtime.onInstalled.addListener(install);
+install();
 
 function install() {
   chrome.contextMenus.onClicked.addListener(function(info, tab) {
     if (info.menuItemId == 'save') {
       chrome.pageCapture.saveAsMHTML({ tabId: tab.id }, function(blob) {
         var filename = sanitize(tab.title) + '.MHT';
+        console.log('Saving as:', filename);
         download(blob, filename);
       });
     }
