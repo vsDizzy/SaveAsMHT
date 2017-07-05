@@ -15,10 +15,17 @@ chrome.browserAction.onClicked.addListener((tab) => {
 });
 
 function save(tab) {
-  chrome.pageCapture.saveAsMHTML({ tabId: tab.id }, (blob) => {
-    var filename = sanitize(tab.title) + '.MHT';
-    console.info('Saving page as:', filename);
-    download(blob, filename);
+  chrome.storage.sync.get({ patch: false }, (options) => {
+    chrome.pageCapture.saveAsMHTML({ tabId: tab.id }, (blob) => {
+      if (options.patch) {
+        console.log('patch');
+      }
+
+      var filename = `${sanitize(tab.title)}.MHT`;
+      console.info(`Saving page as: ${filename}`);
+
+      download(blob, filename);
+    });
   });
 
   function sanitize(filename) {

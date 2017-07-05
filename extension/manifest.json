@@ -23,7 +23,8 @@
     "contextMenus",
     "downloads",
     "pageCapture",
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "commands": {
     "_execute_browser_action": {
@@ -31,5 +32,6 @@
         "default": "Alt+S"
       }
     }
-  }
+  },
+  "options_page": "options.html"
 }
