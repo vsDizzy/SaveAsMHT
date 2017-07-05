@@ -1,32 +1,36 @@
-install();
+chrome.contextMenus.create({
+  contexts: ['all'],
+  id: 'save',
+  title: 'Save As .MHT...'
+});
 
-function install() {
-  chrome.contextMenus.onClicked.addListener(function(info, tab) {
-    if (info.menuItemId == 'save') {
-      chrome.pageCapture.saveAsMHTML({ tabId: tab.id }, function(blob) {
-        var filename = sanitize(tab.title) + '.MHT';
-        console.log('Saving as:', filename);
-        download(blob, filename);
-      });
-    }
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId == 'save') {
+    save(tab);
+  }
+});
+
+chrome.browserAction.onClicked.addListener((tab) => {
+  save(tab);
+});
+
+function save(tab) {
+  chrome.pageCapture.saveAsMHTML({ tabId: tab.id }, (blob) => {
+    var filename = sanitize(tab.title) + '.MHT';
+    console.info('Saving page as:', filename);
+    download(blob, filename);
   });
 
-  chrome.contextMenus.create({
-    contexts: ['all'],
-    id: 'save',
-    title: 'Save As .MHT...'
-  });
-}
+  function sanitize(filename) {
+    return filename.replace(/[<>:"/\\|?*\x00-\x1F]/g, '');
+  }
 
-function sanitize(filename) {
-  return filename.replace(/[<>:"/\\|?*\x00-\x1F]/g, '');
-}
-
-function download(blob, filename) {
-  chrome.downloads.download({
-    conflictAction: 'prompt',
-    filename: filename,
-    saveAs: true,
-    url: URL.createObjectURL(blob)
-  });
+  function download(blob, filename) {
+    chrome.downloads.download({
+      conflictAction: 'prompt',
+      filename: filename,
+      saveAs: true,
+      url: URL.createObjectURL(blob)
+    });
+  }
 }

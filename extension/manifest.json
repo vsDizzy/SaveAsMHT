@@ -2,8 +2,11 @@
   "manifest_version": 2,
   "name": "Save As MHT",
   "short_name": "SaveAsMHT",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Chrome extension saving page as .MHT",
+  "icons": {
+    "128": "mht.png"
+  },
   "homepage_url": "https://github.com/vsDizzy/SaveAsMHT",
   "background": {
     "persistent": false,
@@ -11,13 +14,22 @@
       "background.js"
     ]
   },
-  "icons": {
-    "128": "mht.png"
+  "browser_action": {
+    "default_icon": {
+      "128": "mht.png"
+    }
   },
   "permissions": [
     "contextMenus",
     "downloads",
     "pageCapture",
     "tabs"
-  ]
+  ],
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Alt+S"
+      }
+    }
+  }
 }
