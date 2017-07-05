@@ -19,7 +19,7 @@ async function save(tab) {
     chrome.pageCapture.saveAsMHTML({ tabId: tab.id }, (blob) => {
       if (options.patch) {
         readBlobAsync(blob).then(mht => {
-          mht = mht.replace(/(?:Subject: )(.*)/, `Subject: ${tab.title}`);
+          mht = mht.replace(/(Subject: )(.*)/, `$1${tab.title}`);
           saveInternal(new Blob([mht]));
         });
       } else {
