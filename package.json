@@ -1,6 +1,6 @@
 {
   "name": "save-as-mht",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Chrome extension saving page as .MHT",
   "repository": "https://github.com/vsDizzy/SaveAsMHT",
   "author": "Pavel Kopytin <todizzy@gmail.com>",

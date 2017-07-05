@@ -14,19 +14,26 @@ chrome.browserAction.onClicked.addListener((tab) => {
   save(tab);
 });
 
-function save(tab) {
+async function save(tab) {
   chrome.storage.sync.get({ patch: false }, (options) => {
     chrome.pageCapture.saveAsMHTML({ tabId: tab.id }, (blob) => {
       if (options.patch) {
-        console.log('patch');
+        readBlobAsync(blob).then(mht => {
+          mht = mht.replace(/(?:Subject: )(.*)/, `Subject: ${tab.title}`);
+          saveInternal(new Blob([mht]));
+        });
+      } else {
+        saveInternal(blob);
       }
-
-      var filename = `${sanitize(tab.title)}.MHT`;
-      console.info(`Saving page as: ${filename}`);
-
-      download(blob, filename);
     });
   });
+
+  function saveInternal(blob) {
+    const filename = `${sanitize(tab.title)}.MHT`;
+    console.info(`Saving page as: ${filename}`);
+
+    download(blob, filename);
+  }
 
   function sanitize(filename) {
     return filename.replace(/[<>:"/\\|?*\x00-\x1F]/g, '');
@@ -38,6 +45,19 @@ function save(tab) {
       filename: filename,
       saveAs: true,
       url: URL.createObjectURL(blob)
+    });
+  }
+
+  function readBlobAsync(blob) {
+    return new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onerror = function () {
+        reject(this.error)
+      };
+      fr.onload = function () {
+        resolve(this.result)
+      };
+      fr.readAsText(blob);
     });
   }
 }
