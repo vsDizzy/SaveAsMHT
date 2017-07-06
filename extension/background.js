@@ -1,7 +1,13 @@
-chrome.contextMenus.create({
-  contexts: ['all'],
-  id: 'save',
-  title: 'Save As .MHT...'
+chrome.browserAction.onClicked.addListener((tab) => {
+  save(tab);
+});
+
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.contextMenus.create({
+    contexts: ['all'],
+    id: 'save',
+    title: 'Save As .MHT...'
+  });
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
@@ -10,11 +16,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   }
 });
 
-chrome.browserAction.onClicked.addListener((tab) => {
-  save(tab);
-});
-
-async function save(tab) {
+function save(tab) {
   chrome.storage.sync.get({ patch: false }, (options) => {
     chrome.pageCapture.saveAsMHTML({ tabId: tab.id }, (blob) => {
       if (options.patch) {

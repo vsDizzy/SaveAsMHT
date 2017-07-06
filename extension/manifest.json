@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Save As MHT",
   "short_name": "SaveAsMHT",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Chrome extension saving page as .MHT",
   "icons": {
     "128": "mht.png"
