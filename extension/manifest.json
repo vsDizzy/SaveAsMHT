@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Save As MHT",
   "short_name": "SaveAsMHT",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Save page as single .MHT file.",
   "icons": {
     "128": "mht.png"
