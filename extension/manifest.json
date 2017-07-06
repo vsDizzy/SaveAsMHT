@@ -3,7 +3,7 @@
   "name": "Save As MHT",
   "short_name": "SaveAsMHT",
   "version": "0.0.6",
-  "description": "Chrome extension saving page as .MHT",
+  "description": "Save page as single .MHT file.",
   "icons": {
     "128": "mht.png"
   },
