@@ -1,14 +1,27 @@
-const patch = document.getElementById('patch');
-patch.onchange = function (event) {
-    console.log(patch.parentElement);
-    patch.disabled = true;
+const patchSubjectCheckbox = document.getElementById('patchSubject');
+
+patchSubjectCheckbox.onchange = () => {
+    patchSubjectCheckbox.disabled = true;
     chrome.storage.sync.set({
-        patch: this.checked
+        patchSubject: patchSubjectCheckbox.checked
     }, () => {
-        patch.disabled = false;
+        patchSubjectCheckbox.disabled = false;
     });
 };
 
-chrome.storage.sync.get({ patch: false }, (options) => {
-    patch.checked = options.patch;
-});
+load();
+
+function load() {
+    patchSubjectCheckbox.disabled = true;
+    chrome.storage.sync.get({ patchSubject: true }, (options) => {
+        patchSubjectCheckbox.checked = options.patchSubject;
+        patchSubjectCheckbox.disabled = false;
+    });
+}
+
+const resetButton = document.getElementById('reset');
+
+resetButton.onclick = () => {
+    chrome.storage.sync.clear();
+    load();
+};

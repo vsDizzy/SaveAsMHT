@@ -17,13 +17,12 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 function save(tab) {
-  chrome.storage.sync.get({ patch: false }, (options) => {
-    chrome.pageCapture.saveAsMHTML({ tabId: tab.id }, (blob) => {
-      if (options.patch) {
-        readBlobAsync(blob).then(mht => {
-          mht = mht.replace(/(Subject: )(.*)/, `$1${tab.title}`);
-          saveInternal(new Blob([mht]));
-        });
+  chrome.storage.sync.get({ patchSubject: true }, (options) => {
+    chrome.pageCapture.saveAsMHTML({ tabId: tab.id }, async (blob) => {
+      if (options.patchSubject) {
+        var mht = await readBlobAsync(blob);
+        mht = mht.replace(/(Subject: )(.*)/, `$1${tab.title}`);
+        saveInternal(new Blob([mht]));
       } else {
         saveInternal(blob);
       }
@@ -53,11 +52,11 @@ function save(tab) {
   function readBlobAsync(blob) {
     return new Promise((resolve, reject) => {
       const fr = new FileReader();
-      fr.onerror = function () {
-        reject(this.error)
+      fr.onerror = () => {
+        reject(fr.error)
       };
-      fr.onload = function () {
-        resolve(this.result)
+      fr.onload = () => {
+        resolve(fr.result)
       };
       fr.readAsText(blob);
     });
