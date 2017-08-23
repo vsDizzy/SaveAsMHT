@@ -34,5 +34,8 @@
       }
     }
   },
-  "options_page": "options.html"
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  }
 }
