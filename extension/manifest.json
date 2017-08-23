@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Save As MHT",
   "short_name": "SaveAsMHT",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Save page as single .MHT file.",
   "icons": {
     "128": "mht.png"
@@ -11,6 +11,7 @@
   "background": {
     "persistent": false,
     "scripts": [
+      "promisify.js",
       "background.js"
     ]
   },

@@ -1,3 +1,5 @@
+promisifyAll(chrome.pageCapture, chrome.storage.sync);
+
 chrome.browserAction.onClicked.addListener((tab) => {
   save(tab);
 });
@@ -16,29 +18,20 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   }
 });
 
-function save(tab) {
-  chrome.storage.sync.get({ patchSubject: true }, (options) => {
-    chrome.pageCapture.saveAsMHTML({ tabId: tab.id }, async (blob) => {
-      if (options.patchSubject) {
-        var mht = await readBlobAsync(blob);
-        mht = mht.replace(/(Subject: )(.*)/, `$1${tab.title}`);
-        saveInternal(new Blob([mht]));
-      } else {
-        saveInternal(blob);
-      }
-    });
-  });
+async function save(tab) {
+  let blob = await chrome.pageCapture.saveAsMHTML({ tabId: tab.id }, null);
 
-  function saveInternal(blob) {
-    const filename = `${sanitize(tab.title)}.MHT`;
-    console.info(`Saving page as: ${filename}`);
-
-    download(blob, filename);
+  const options = await chrome.storage.sync.get({ patchSubject: true }, null);
+  if (options.patchSubject) {
+    let mht = await readBlobAsync(blob);
+    mht = mht.replace(/(Subject: )(.*)/, `$1${tab.title}`);
+    blob = new Blob([mht]);
   }
 
-  function sanitize(filename) {
-    return filename.replace(/[<>:"/\\|?*\x00-\x1F]/g, '');
-  }
+  const filename = `${sanitize(tab.title)}.MHT`;
+  console.info(`Saving page as: ${filename}`);
+
+  download(blob, filename);
 
   function download(blob, filename) {
     chrome.downloads.download({
@@ -60,5 +53,9 @@ function save(tab) {
       };
       fr.readAsText(blob);
     });
+  }
+
+  function sanitize(filename) {
+    return filename.replace(/[<>:"/\\|?*\x00-\x1F]/g, '');
   }
 }
