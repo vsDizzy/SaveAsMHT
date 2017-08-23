@@ -7,10 +7,9 @@
   "license": "MIT",
   "scripts": {
     "build": "build",
-    "postinstall": "typings install",
     "run": "run"
   },
   "devDependencies": {
-    "typings": "^2.1.1"
+    "@types/chrome": "^0.0.48"
   }
 }
