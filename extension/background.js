@@ -1,4 +1,4 @@
-promisifyAll(chrome.pageCapture, chrome.storage.sync);
+promisifyAll(chrome.pageCapture, chrome.storage.sync, chrome.tabs);
 
 chrome.browserAction.onClicked.addListener((tab) => {
   save(tab);
@@ -8,7 +8,7 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.contextMenus.create({
     contexts: ['all'],
     id: 'save',
-    title: 'Save As .MHT...'
+    title: 'Save as .mht...'
   });
 });
 
@@ -24,11 +24,11 @@ async function save(tab) {
   const options = await chrome.storage.sync.get({ patchSubject: true }, null);
   if (options.patchSubject) {
     let mht = await readBlobAsync(blob);
-    mht = mht.replace(/(Subject: )(.*)/, `$1${tab.title}`);
+    mht = mht.replace(/^(Subject: )(.*)$/m, `$1${tab.title}`);
     blob = new Blob([mht]);
   }
 
-  const filename = `${sanitize(tab.title)}.MHT`;
+  const filename = `${sanitize(tab.title)}.mht`;
   console.info(`Saving page as: ${filename}`);
 
   download(filename, blob);
@@ -57,5 +57,27 @@ async function save(tab) {
 
   function sanitize(filename) {
     return filename.replace(/[<>:"/\\|?*\x00-\x1F]/g, '');
+  }
+}
+
+run();
+
+async function run() {
+  function setPopup(tab) {
+    if (/file:\/\/\//.test(tab.url)) {
+      chrome.browserAction.setPopup({ tabId: tab.id, popup: 'info.html' });
+      chrome.browserAction.setBadgeText({ tabId: tab.id, text: 'info' });
+    }
+  }
+
+  chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+    if (changeInfo.status == 'loading') {
+      setPopup(tab);
+    }
+  });
+
+  const tabs = await chrome.tabs.query({}, null);
+  for (const tab of tabs) {
+    setPopup(tab);
   }
 }

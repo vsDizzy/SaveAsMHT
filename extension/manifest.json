@@ -3,7 +3,7 @@
   "name": "Save As MHT",
   "short_name": "SaveAsMHT",
   "version": "0.0.8",
-  "description": "Save page as single .MHT file.",
+  "description": "Save page as single .mht file.",
   "icons": {
     "128": "mht.png"
   },
@@ -25,7 +25,8 @@
     "downloads",
     "pageCapture",
     "storage",
-    "tabs"
+    "tabs",
+    "file:///*"
   ],
   "commands": {
     "_execute_browser_action": {
