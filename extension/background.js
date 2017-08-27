@@ -1,4 +1,9 @@
-promisifyAll(chrome.pageCapture, chrome.storage.sync, chrome.tabs);
+promisifyAll(
+  chrome.pageCapture,
+  chrome.permissions,
+  chrome.storage.sync,
+  chrome.tabs
+);
 
 chrome.browserAction.onClicked.addListener((tab) => {
   save(tab);
@@ -63,10 +68,12 @@ async function save(tab) {
 run();
 
 async function run() {
-  function setPopup(tab) {
-    if (/file:\/\/\//.test(tab.url)) {
-      chrome.browserAction.setPopup({ tabId: tab.id, popup: 'info.html' });
+  async function setPopup(tab) {
+    if (/^file:\/\/\//.test(tab.url)) {
       chrome.browserAction.setBadgeText({ tabId: tab.id, text: 'info' });
+
+      const fileEnabled = await chrome.permissions.contains({ origins: ['file:///*'] }, null);
+      chrome.browserAction.setPopup({ tabId: tab.id, popup: fileEnabled ? 'info.html' : 'filePermission.html' });
     }
   }
 

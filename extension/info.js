@@ -85,6 +85,6 @@ async function run() {
       val.push(`${mm} minute(s)`);
     }
 
-    return val.join(',');
+    return val.join(', ');
   }
 }
