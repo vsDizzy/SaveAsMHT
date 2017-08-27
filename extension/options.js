@@ -1,22 +1,32 @@
+promisifyAll(chrome.storage.sync);
+
 const patchSubjectCheckbox = document.getElementById('patchSubject');
 
-patchSubjectCheckbox.onchange = () => {
-  patchSubjectCheckbox.disabled = true;
-  chrome.storage.sync.set({
-    patchSubject: patchSubjectCheckbox.checked
-  }, () => {
+patchSubjectCheckbox.onchange = async () => {
+  try {
+    patchSubjectCheckbox.disabled = true;
+
+    await chrome.storage.sync.set({
+      patchSubject: patchSubjectCheckbox.checked
+    }, null);
+  }
+  finally {
     patchSubjectCheckbox.disabled = false;
-  });
+  }
 };
 
 load();
 
-function load() {
-  patchSubjectCheckbox.disabled = true;
-  chrome.storage.sync.get({ patchSubject: true }, (options) => {
+async function load() {
+  try {
+    patchSubjectCheckbox.disabled = true;
+
+    const options = await chrome.storage.sync.get({ patchSubject: true }, null);
     patchSubjectCheckbox.checked = options.patchSubject;
+  }
+  finally {
     patchSubjectCheckbox.disabled = false;
-  });
+  }
 }
 
 const resetButton = document.getElementById('reset');

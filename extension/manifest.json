@@ -24,8 +24,8 @@
     "contextMenus",
     "downloads",
     "pageCapture",
-    "tabs",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "commands": {
     "_execute_browser_action": {

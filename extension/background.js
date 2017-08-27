@@ -31,9 +31,9 @@ async function save(tab) {
   const filename = `${sanitize(tab.title)}.MHT`;
   console.info(`Saving page as: ${filename}`);
 
-  download(blob, filename);
+  download(filename, blob);
 
-  function download(blob, filename) {
+  function download(filename, blob) {
     chrome.downloads.download({
       conflictAction: 'prompt',
       filename: filename,
