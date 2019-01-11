@@ -10,6 +10,6 @@
     "run": "run"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.48"
+    "@types/chrome": "^0.0.77"
   }
 }

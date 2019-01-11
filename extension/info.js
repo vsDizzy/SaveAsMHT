@@ -1,5 +1,3 @@
-promisifyAll(chrome.tabs);
-
 const dateSpan = document.getElementById('date');
 const spanElement = document.getElementById('span');
 const urlLink = document.getElementById('url');
@@ -7,23 +5,23 @@ const urlLink = document.getElementById('url');
 const model = {};
 Object.defineProperties(model, {
   date: {
-    set: (value) => {
+    set: value => {
       dateSpan.textContent = value;
     }
   },
   span: {
-    set: (value) => {
+    set: value => {
       spanElement.textContent = value;
     }
   },
   urlHref: {
-    set: (value) => {
+    set: value => {
       urlLink.href = value;
       urlLink.title = value;
     }
   },
   urlText: {
-    set: (value) => {
+    set: value => {
       urlLink.textContent = value;
     }
   }
@@ -32,7 +30,10 @@ Object.defineProperties(model, {
 run();
 
 async function run() {
-  const tabs = await chrome.tabs.query({ currentWindow: true, active: true }, null);
+  const tabs = await toPromise(chrome.tabs.query, {
+    currentWindow: true,
+    active: true
+  });
   if (!(tabs && tabs.length)) {
     return;
   }
@@ -47,12 +48,12 @@ async function run() {
   model.span = spanToString(Date.now() - then);
 
   function load(url) {
-    return new Promise((resolve, reject) => {
+    return new Promise(function(resolve, reject) {
       const xr = new XMLHttpRequest();
-      xr.onerror = () => {
+      xr.onerror = function() {
         reject(xr.error);
       };
-      xr.onload = () => {
+      xr.onload = function() {
         resolve(xr.responseText);
       };
       xr.open('GET', url);

@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Save As MHT",
   "short_name": "SaveAsMHT",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Save webpage as single .mht file.",
   "icons": {
     "128": "mht.png"
@@ -10,10 +10,7 @@
   "homepage_url": "https://github.com/vsDizzy/SaveAsMHT",
   "background": {
     "persistent": false,
-    "scripts": [
-      "promisify.js",
-      "background.js"
-    ]
+    "scripts": ["promisify.js", "background.js"]
   },
   "browser_action": {
     "default_icon": {
@@ -34,9 +31,5 @@
         "default": "Alt+S"
       }
     }
-  },
-  "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
   }
 }
