@@ -1,0 +1,18 @@
+{
+  "name": "save-as-mht",
+  "version": "0.2.1",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "tsc --build --watch",
+    "start": "cmd /c start",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "zip": "cmd /c zip"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.239",
+    "@types/node": "^20.4.0",
+    "typescript": "^5.1.6"
+  }
+}

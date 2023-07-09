@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Save As MHT",
+  "version": "0.2.1",
+  "short_name": "SaveAsMHT",
+  "description": "Save page as `.mht` files.",
+  "homepage_url": "https://github.com/vsDizzy/SaveAsMHT",
+  "icons": {
+    "128": "mht-icon.png"
+  },
+  "action": {
+    "default_icon": {
+      "128": "mht-icon.png"
+    }
+  },
+  "background": {
+    "service_worker": "dist/worker.js",
+    "type": "module"
+  },
+  "permissions": ["tabs", "pageCapture", "downloads", "contextMenus"],
+  "host_permissions": ["file:///*"],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+S"
+      }
+    }
+  }
+}
